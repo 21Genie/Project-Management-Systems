@@ -1,11 +1,11 @@
-export interface IBoard {
+export interface IBoards {
     description: string;
     id: number;
     name: string;
     taskCount: number;
 }
 
-export interface ITask {
+export interface IBoard {
     assignee: {
         avatarUrl: string;
         email: string;

@@ -1,0 +1,32 @@
+.kanban {
+    display: flex;
+    border: 1px solid #333;
+    border-radius: 10px;
+    min-height: 50vh;
+}
+
+.column {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+    border-right: 1px solid #333;
+    padding: 10px 0;
+}
+
+.column:last-child {
+    border-right: none;
+}
+
+.title {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    list-style: none;
+    padding: 0 10px;
+}

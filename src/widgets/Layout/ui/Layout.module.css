@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.link {
+    text-decoration: none;
+    color: rgb(21, 119, 255);
+}
+
+.link:hover {
+    transition: 0.3s;
+    color: rgba(21, 119, 255, 0.7);
+}
+
+.link:active {
+    transition: 0.3s;
+    color: rgb(21, 119, 255);
+}
+
+.active_link {
+    color: rgb(130, 181, 251);
+}

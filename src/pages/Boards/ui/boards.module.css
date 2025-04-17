@@ -1,0 +1,26 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.item {
+    display: flex;
+    gap: 5px;
+}
+
+.title {
+    font-size: 16px;
+    max-width: 200px;
+}
+
+.link {
+    font-size: 12px;
+    max-width: 60px;
+    margin-left: auto;
+    text-align: center;
+}
