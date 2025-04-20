@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { useEffect } from 'react';
 import { fetchBoard } from '../../Boards/Boards.slice';
-import { Button } from 'antd';
 import { Task } from '../../../widgets/Task';
 import cls from './board.module.css';
 
@@ -26,14 +25,14 @@ export const Board = () => {
 
     return (
         <>
-            <h2>{nameBoard?.name}</h2>
+            <h2 className={cls.title_board}>{nameBoard?.name}</h2>
             <div className={cls.kanban}>
                 <div className={cls.column}>
                     <h3 className={cls.title}>To do</h3>
                     <ul className={cls.list}>
                         {statusBacklog?.map((task) => (
                             <li className={cls.task} key={task.id}>
-                                <Task title={task.title} task={task} />
+                                <Task title={task.title} task={task} boardId={id} />
                             </li>
                         ))}
                     </ul>
@@ -43,7 +42,7 @@ export const Board = () => {
                     <ul className={cls.list}>
                         {statusInProgress?.map((task) => (
                             <li className={cls.task} key={task.id}>
-                                <Task title={task.title} />
+                                <Task title={task.title} task={task} />
                             </li>
                         ))}
                     </ul>
@@ -53,7 +52,7 @@ export const Board = () => {
                     <ul className={cls.list}>
                         {statusDone?.map((task) => (
                             <li className={cls.task} key={task.id}>
-                                <Task title={task.title} />
+                                <Task title={task.title} task={task} />
                             </li>
                         ))}
                     </ul>

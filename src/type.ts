@@ -20,3 +20,33 @@ export interface IBoard {
     status: string;
     title: string;
 }
+
+export interface IBoardTask {
+    assignee: {
+        avatarUrl: string;
+        email: string;
+        fullName: string;
+        id: number;
+    };
+    description: string;
+    id: number;
+    priority: string;
+    status: string;
+    title: string;
+}
+
+export interface ITask {
+    assignee: {
+        avatarUrl: string;
+        email: string;
+        fullName: string;
+        id: number;
+    };
+    boardId: number;
+    boardName: string;
+    description: string;
+    id: number;
+    priority: string;
+    status: string;
+    title: string;
+}

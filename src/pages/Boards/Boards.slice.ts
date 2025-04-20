@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IBoards, IBoard } from '../../type';
+import { IBoards, IBoard, IBoardTask } from '../../type';
 
 type TypeInitialBoardsState = {
     boards: IBoards[];
@@ -44,6 +44,29 @@ export const fetchBoard = createAsyncThunk(
             const board = await response.json();
 
             return board;
+        } catch (error) {
+            return rejectWithValue('Sever Error!');
+        }
+    },
+);
+
+export const updateTask = createAsyncThunk(
+    'board/fetchBoard',
+    async (
+        { task, formValues, taskId }: { task: IBoardTask; taskId: string },
+        { rejectWithValue },
+    ) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/tasks/update/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(formValues),
+            });
+
+            console.log(response);
+            if (!response.ok) throw new Error('Server Error!');
         } catch (error) {
             return rejectWithValue('Sever Error!');
         }

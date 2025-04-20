@@ -13,5 +13,17 @@ select {
 }
 
 body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     padding: 0 10px;
+    max-width: 568px;
+    min-width: 320px;
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+    }
+    
+
+    @media (min-width: 1280px) {
+        max-width: 840px;
+    }
 }

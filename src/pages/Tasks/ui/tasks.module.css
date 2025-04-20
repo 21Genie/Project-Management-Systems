@@ -1,0 +1,54 @@
+.issues {
+    width: 100%;
+}
+
+.wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.search {
+    max-width: 160px;
+
+    @media (min-width: 768px) {
+        max-width: 280px;
+    }
+    
+    @media (min-width: 1280px) {
+        max-width: 330px;
+    }
+}
+
+.filter {
+    @media (min-width: 1280px) {
+        min-width: 150px;
+    }
+}
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+}
+
+.task {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    border: 2px solid #c7c7c7;
+    padding: 10px;
+    border-radius: 10px;
+
+    @media (min-width: 768px) {
+        font-size: 16px;
+    }
+    
+    @media (min-width: 1280px) {
+        padding: 12px;
+        font-size: 18px;
+    }
+}

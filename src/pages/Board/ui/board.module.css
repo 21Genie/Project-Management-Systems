@@ -1,16 +1,40 @@
+.title_board {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 700;
+
+    @media (min-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (min-width: 1280px) {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+}
+
 .kanban {
     display: flex;
     border: 1px solid #333;
     border-radius: 10px;
-    min-height: 50vh;
+    min-height: 60vh;
 }
 
 .column {
     display: flex;
-    gap: 12px;
+    gap: 7px;
     flex-direction: column;
     border-right: 1px solid #333;
     padding: 10px 0;
+    min-width: 100px;
+
+    @media (min-width: 768px) {
+        min-width: 181px;
+    }
+
+    @media (min-width: 1280px) {
+        min-width: 270px;
+    }
 }
 
 .column:last-child {
@@ -18,9 +42,17 @@
 }
 
 .title {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 18px;
+    font-weight: 500;
     text-align: center;
     padding-bottom: 10px;
     border-bottom: 1px solid #333;
+
+    @media (min-width: 1280px) {
+        font-size: 18px;
+    }
 }
 
 .list {
@@ -28,5 +60,5 @@
     flex-direction: column;
     gap: 15px;
     list-style: none;
-    padding: 0 10px;
+    padding: 0 4px;
 }
