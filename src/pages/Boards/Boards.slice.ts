@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IBoards, IBoard, IBoardTask } from '../../type';
+import { IBoards, IBoard, ITaskUpdate } from '../../type';
 
 type TypeInitialBoardsState = {
     boards: IBoards[];
@@ -34,7 +34,7 @@ export const fetchBoards = createAsyncThunk(
 );
 
 export const fetchBoard = createAsyncThunk(
-    'board/fetchBoard',
+    'boards/fetchBoard',
     async (id: string, { rejectWithValue }) => {
         try {
             const response = await fetch(`http://localhost:8080/api/v1/boards/${id}`);
@@ -51,9 +51,9 @@ export const fetchBoard = createAsyncThunk(
 );
 
 export const updateTask = createAsyncThunk(
-    'board/fetchBoard',
+    'boards/updateTask',
     async (
-        { task, formValues, taskId }: { task: IBoardTask; taskId: string },
+        { updateFormTask, taskId }: { updateFormTask: ITaskUpdate; taskId: number },
         { rejectWithValue },
     ) => {
         try {
@@ -62,10 +62,9 @@ export const updateTask = createAsyncThunk(
                 headers: {
                     'Content-type': 'application/json',
                 },
-                body: JSON.stringify(formValues),
+                body: JSON.stringify(updateFormTask),
             });
 
-            console.log(response);
             if (!response.ok) throw new Error('Server Error!');
         } catch (error) {
             return rejectWithValue('Sever Error!');
@@ -76,12 +75,6 @@ export const updateTask = createAsyncThunk(
 export const boardsSlice = createSlice({
     name: 'boards',
     initialState: initialBoardsState,
-    selectors: {
-        selectNameBoard: (state, id) => {
-            const board = state.boards.find((board) => board.id === id);
-            return board?.name;
-        },
-    },
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchBoards.pending, (state) => {

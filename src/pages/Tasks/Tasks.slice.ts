@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ITask } from '../../type';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { ITask, ITaskCreate } from '../../type';
 
 type TypeInitialTasksState = {
     tasks: ITask[];
@@ -7,7 +7,7 @@ type TypeInitialTasksState = {
     error: string | null;
 };
 
-export const fetchTasks = createAsyncThunk('board/fetchBoard', async (_, { rejectWithValue }) => {
+export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (_, { rejectWithValue }) => {
     try {
         const response = await fetch(`http://localhost:8080/api/v1/tasks`);
 
@@ -20,6 +20,25 @@ export const fetchTasks = createAsyncThunk('board/fetchBoard', async (_, { rejec
         return rejectWithValue('Sever Error!');
     }
 });
+
+export const createTask = createAsyncThunk(
+    'tasks/createTask',
+    async (newTask: ITaskCreate, { rejectWithValue }) => {
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/tasks/create', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(newTask),
+            });
+
+            if (!response.ok) throw new Error('Server Error!');
+        } catch (error) {
+            return rejectWithValue('Sever Error!');
+        }
+    },
+);
 
 const initialTasksState: TypeInitialTasksState = {
     tasks: [],
@@ -50,5 +69,3 @@ export const tasksSlice = createSlice({
         });
     },
 });
-
-export const { filterTasks } = tasksSlice.actions;

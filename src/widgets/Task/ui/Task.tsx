@@ -1,18 +1,31 @@
 import { useState } from 'react';
 import { Button, Drawer } from 'antd';
 
-import cls from './task.module.css';
 import { FormTask } from '../../FormTask/ui/FormTask';
-import { IBoardTask } from '../../../type';
+import { IBoardTask, IUsers } from '../../../type';
+import cls from './task.module.css';
 
-interface ITask {
+interface ITaskProps {
     title: string;
     task?: IBoardTask;
     isCreateTask?: boolean;
+    isGoToBoard?: boolean;
+    taskBoardId?: number;
+    users?: IUsers[];
+    renderBoard?: () => void;
 }
 
-export const Task = ({ title, task, isCreateTask }: ITask) => {
+export const Task = ({
+    title,
+    task,
+    isCreateTask,
+    isGoToBoard,
+    taskBoardId,
+    users,
+    renderBoard,
+}: ITaskProps) => {
     const [open, setOpen] = useState(false);
+
     const titleFormTask = isCreateTask ? 'Создание задачи' : 'Редактирование задачи';
     const classButton = isCreateTask ? cls.button_create : cls.button;
 
@@ -31,7 +44,15 @@ export const Task = ({ title, task, isCreateTask }: ITask) => {
                 </button>
             )}
             <Drawer title={titleFormTask} onClose={onClose} open={open}>
-                <FormTask task={task} isCreateTask onClose={onClose} />
+                <FormTask
+                    task={task}
+                    isCreateTask={isCreateTask}
+                    onClose={onClose}
+                    isGoToBoard={isGoToBoard}
+                    taskBoardId={taskBoardId}
+                    users={users}
+                    renderBoard={renderBoard}
+                />
             </Drawer>
         </>
     );

@@ -2,11 +2,13 @@ import { configureStore, createAsyncThunk, createSelector } from '@reduxjs/toolk
 import { boardsSlice } from '../pages/Boards/Boards.slice';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { tasksSlice } from '../pages/Tasks/Tasks.slice';
+import { userSlice } from '../widgets/Users/user.slice';
 
 export const store = configureStore({
     reducer: {
         boardsSlice: boardsSlice.reducer,
         tasksSlice: tasksSlice.reducer,
+        userSlice: userSlice.reducer,
     },
 });
 

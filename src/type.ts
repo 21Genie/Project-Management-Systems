@@ -50,3 +50,30 @@ export interface ITask {
     status: string;
     title: string;
 }
+
+export interface ITaskUpdate {
+    assigneeId: number;
+    description: string;
+    priority: string;
+    status: string;
+    title: string;
+}
+
+export interface ITaskCreate {
+    assigneeId: number;
+    boardId: number;
+    description: string;
+    priority: string;
+    title: string;
+}
+
+export interface IUsers {
+    avatarUrl: string;
+    description: string;
+    email: string;
+    fullName: string;
+    id: number;
+    tasksCount: number;
+    teamId: number;
+    teamName: string;
+}

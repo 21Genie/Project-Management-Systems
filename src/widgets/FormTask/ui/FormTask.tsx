@@ -1,21 +1,39 @@
-import { FormEvent, useState } from 'react';
-import { Button, Form, Input, Select } from 'antd';
-import { IBoardTask } from '../../../type';
-import { useAppDispatch } from '../../../app/store';
+import { FormEvent, useEffect, useState } from 'react';
+import { Button, Flex, Form, Input, Select } from 'antd';
+import { Link } from 'react-router-dom';
+
+import { IBoardTask, ITask, ITaskCreate, ITaskUpdate, IUsers } from '../../../type';
+import { useAppDispatch, useAppSelector } from '../../../app/store';
 import { updateTask } from '../../../pages/Boards/Boards.slice';
+import { createTask } from '../../../pages/Tasks/Tasks.slice';
 const { Option } = Select;
 
 interface FormProps {
     onClose: () => void;
     isCreateTask?: boolean;
     task?: IBoardTask;
+    isGoToBoard?: boolean;
+    taskBoardId?: number;
+    tasks?: ITask[];
+    users?: IUsers[];
+    renderBoard?: () => void;
 }
 
-export const FormTask = ({ task, isCreateTask, onClose }: FormProps) => {
-    const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
+export const FormTask = ({
+    task,
+    isCreateTask,
+    onClose,
+    isGoToBoard,
+    taskBoardId,
+    users,
+    renderBoard,
+}: FormProps) => {
     const [priority, setPriority] = useState(task?.priority);
     const [status, setStatus] = useState(task?.status);
-    const [executor, setExecutor] = useState('');
+    const [assigneeId, setAssigneeId] = useState(task?.assignee.id);
+    const [boardId, setBoardId] = useState<number>();
+
+    const { boards } = useAppSelector((state) => state.boardsSlice);
 
     const dispatch = useAppDispatch();
 
@@ -23,29 +41,50 @@ export const FormTask = ({ task, isCreateTask, onClose }: FormProps) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
+        const { title, description } = { ...Object.fromEntries(formData) };
+
         if (!isCreateTask) {
-            const updateFormTask = {
-                ...Object.fromEntries(formData),
-                priority,
-                status,
-                executor,
-                assigneeId: task?.assignee.id,
-            };
+            if (assigneeId) {
+                const updateFormTask: ITaskUpdate = {
+                    title: String(title),
+                    description: String(description),
+                    priority,
+                    status,
+                    assigneeId,
+                };
 
-            dispatch(updateTask({ task, updateFormTask, taskId: task?.id }));
+                if (task) {
+                    dispatch(updateTask({ updateFormTask, taskId: task.id }));
+                }
+
+                if (renderBoard) {
+                    setTimeout(() => {
+                        renderBoard();
+                    }, 90);
+                }
+            }
         }
+        if (isCreateTask) {
+            if (assigneeId && boardId) {
+                const newTask: ITaskCreate = {
+                    title: String(title),
+                    description: String(description),
+                    assigneeId,
+                    boardId,
+                    priority,
+                };
 
-        const createTask = {
-            ...Object.fromEntries(formData),
-            assigneeId: task?.assignee.id,
-            title: task?.title,
-            priority,
-            status,
-        };
-        console.log(createTask);
+                dispatch(createTask(newTask));
+                if (renderBoard) {
+                    setTimeout(() => {
+                        renderBoard();
+                    }, 90);
+                }
+            }
+        }
     };
 
-    const handleChange = (value: string, setField: (field: string) => void) => {
+    const handleChange = (value: string | number, setField) => {
         setField(value);
     };
 
@@ -68,27 +107,35 @@ export const FormTask = ({ task, isCreateTask, onClose }: FormProps) => {
             </Form.Item>
 
             <Form.Item>
-                <Select defaultValue="project" value="Проект" disabled={componentDisabled}>
-                    <Select.Option value="Project">Проект</Select.Option>
+                <Select
+                    placeholder="Проект"
+                    disabled={!isCreateTask}
+                    onChange={(value: number) => handleChange(value, setBoardId)}
+                >
+                    {boards.map((board) => (
+                        <Option key={board.id} value={board.id}>
+                            {board.name}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
             <Form.Item>
                 <Select
+                    value={priority}
                     placeholder="Приоритет"
-                    value={task?.priority}
-                    onChange={(value) => handleChange(value, setPriority)}
+                    onChange={(value: string) => handleChange(value, setPriority)}
                 >
                     <Option value="High">Высокий</Option>
                     <Option value="Medium">Средний</Option>
-                    <Option value="Lower">низкий</Option>
+                    <Option value="Low">низкий</Option>
                 </Select>
             </Form.Item>
 
             <Form.Item>
                 <Select
-                    value={task?.status}
                     placeholder="Статус"
+                    value={status}
                     onChange={(value) => handleChange(value, setStatus)}
                 >
                     <Option value="Backlog">To do</Option>
@@ -99,17 +146,39 @@ export const FormTask = ({ task, isCreateTask, onClose }: FormProps) => {
 
             <Form.Item>
                 <Select
+                    value={task?.assignee.fullName}
                     placeholder="Исполнитель"
-                    onChange={(value) => handleChange(value, setExecutor)}
+                    onChange={(value: number | string) =>
+                        handleChange(Number(value), setAssigneeId)
+                    }
                 >
-                    <Option value="i">Я</Option>
+                    {users?.map((user) => (
+                        <Option key={user.id} value={user.id}>
+                            {user.fullName}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit" onClick={onClose}>
-                    {isCreateTask ? 'Создать' : 'Редактировать'}
-                </Button>
+                {isGoToBoard ? (
+                    <Flex gap="middle">
+                        <Link to={`/boards/${taskBoardId}`}>Перейти на доску</Link>
+                        <Button type="primary" htmlType="submit" onClick={onClose}>
+                            Редактировать
+                        </Button>
+                    </Flex>
+                ) : (
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        onClick={() => {
+                            onClose();
+                        }}
+                    >
+                        {isCreateTask ? 'Создать' : 'Редактировать'}
+                    </Button>
+                )}
             </Form.Item>
         </Form>
     );

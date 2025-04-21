@@ -1,6 +1,7 @@
 import { Spin } from 'antd';
-import cls from './boards.module.css';
 import { Link } from 'react-router-dom';
+
+import cls from './boards.module.css';
 import { useAppSelector } from '../../../app/store';
 
 export const Boards = () => {

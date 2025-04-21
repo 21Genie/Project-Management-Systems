@@ -3,9 +3,10 @@ import { Select } from 'antd';
 import Search from 'antd/es/input/Search';
 
 import { useAppDispatch, useAppSelector } from '../../../app/store';
-import cls from './tasks.module.css';
 import { ITask } from '../../../type';
 import { fetchTasks } from '../Tasks.slice';
+import { Task } from '../../../widgets/Task';
+import cls from './tasks.module.css';
 
 const filterTasksByTitle = (tasks: ITask[], searchQuery: string) => {
     if (!searchQuery) return tasks;
@@ -68,7 +69,7 @@ export const Tasks = () => {
 
     useEffect(() => {
         dispatch(fetchTasks());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className={cls.issues}>
@@ -93,9 +94,13 @@ export const Tasks = () => {
 
             <ul className={cls.tasks}>
                 {getFinalTasks().map((task) => (
-                    <li className={cls.task} key={task.id}>
-                        {task.title}
-                    </li>
+                    <Task
+                        task={task}
+                        key={task.id}
+                        title={task.title}
+                        isGoToBoard={true}
+                        taskBoardId={task.boardId}
+                    />
                 ))}
             </ul>
         </div>

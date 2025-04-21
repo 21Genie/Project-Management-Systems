@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 import { Flex } from 'antd';
 
-import cls from './app.module.css';
 import { Boards } from '../pages/Boards';
 import { Layout } from '../widgets/Layout';
 import { Board } from '../pages/Board';
 import { BaseContainer } from '../containers/ui/BaseContainer';
 import { Tasks } from '../pages/Tasks';
+import cls from './app.module.css';
 
 export const App = () => {
     return (
